@@ -4,7 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#7B67EE">
-<title>Raptor Gym · Workouts</title>
+<title>Coach Gavy · Workouts</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Workouts">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -533,11 +540,40 @@ html{scroll-padding-top:16px}
 .wa .bubble .url{color:#027EB5;word-break:break-all}
 .wa .bubble .time{display:flex;justify-content:flex-end;align-items:center;gap:3px;font-size:11px;color:#667781;margin-top:2px}
 .wa .bubble .time svg{width:16px;height:11px}
+
+/* ---- v8: coach header, install, per-set rest ---- */
+.hero-top{gap:12px}
+.hi{flex:1;min-width:0}
+.hi span{font-size:18px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.hero-right{flex:0 0 auto;display:flex;align-items:center}
+.hero-install{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 14px 0 12px;border-radius:999px;background:#fff;color:var(--ink);font-weight:800;font-size:13.5px;box-shadow:0 6px 18px rgba(40,20,120,.2)}
+.hero-install svg.i{width:17px;height:17px}
+.hero-date{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.18);color:#fff;font-weight:700;font-size:13px;white-space:nowrap}
+@media (max-width:360px){.hero-install{padding:0 12px;font-size:13px}}
+.rest-gap{display:flex;align-items:center;justify-content:center;width:100%;height:26px;margin:-2px 0 6px;position:relative}
+.rest-gap::before{content:"";position:absolute;left:52px;right:48px;top:50%;border-top:1.5px dashed var(--surface-3)}
+.rest-gap span{position:relative;display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 10px;border-radius:999px;background:#fff;border:1.5px solid var(--surface-3);font-size:12px;font-weight:700;color:var(--muted)}
+.rest-gap span svg.i{width:13px;height:13px}
+.rest-gap.own span{background:var(--violet-soft);border-color:#CFC5FF;color:var(--set)}
+.rest-gap:active span{background:var(--surface-2)}
+.varies{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:var(--violet-soft);color:var(--set);font-size:11px;font-weight:800}
+.seg button[data-act="restother"]{white-space:nowrap}
+.rest-custom{display:flex;gap:8px}
+.rest-custom .text-in{flex:1}
+.rest-custom .btn{height:46px;padding:0 20px;font-size:15px}
+.inst-lead{margin:0 0 14px;color:var(--ink-2);line-height:1.5}
+.inst-steps{display:grid;gap:8px}
+.inst-step{display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:12px 14px;font-size:15px;line-height:1.4}
+.lime-pill{white-space:nowrap;max-width:100%;overflow:hidden}
+.hero-install{white-space:nowrap}
+@media (max-width:380px){.x-app{display:none}.hero-install{padding:0 12px}.hero-title{margin-top:16px}.hi span{font-size:16.5px}.lime-pill{font-size:12px;padding:0 10px 0 8px}}
+.inst-step b{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--lime);display:grid;place-items:center;font-weight:800}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-crown" viewBox="0 0 24 24"><path d="M3 19h18M4 8l4 4 4-7 4 7 4-4-2 10H6z"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
@@ -565,8 +601,12 @@ html{scroll-padding-top:16px}
 <header class="hero">
   <div class="app">
     <div class="hero-top">
-      <div class="logo" aria-hidden="true">R</div>
-      <div class="hi"><span>Hi, Coach Gavy</span><b class="lime-pill"><svg class="i"><use href="#i-crown"/></svg>Raptor Gym</b></div>
+      <div class="logo" aria-hidden="true">G</div>
+      <div class="hi"><span>Coach Gavy</span><b class="lime-pill"><svg class="i"><use href="#i-crown"/></svg>Personal Trainer</b></div>
+      <div class="hero-right">
+        <button class="hero-install" id="install-btn" hidden><svg class="i"><use href="#i-download"/></svg>Install<span class="x-app">&nbsp;app</span></button>
+        <span class="hero-date" id="hero-date"></span>
+      </div>
     </div>
     <h1 class="hero-title">Build today’s<br>workout</h1>
     <div class="tabs" role="tablist" aria-label="Builder mode">
@@ -745,11 +785,35 @@ html{scroll-padding-top:16px}
   </div>
 </div>
 
+<div class="overlay" id="inst">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="inst-t">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="inst-t">Install the app</h2><button class="close" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="sheet-body">
+      <p class="inst-lead">Add it to your home screen. It opens full screen like a normal app and keeps your members and plans on this phone.</p>
+      <div class="inst-steps" id="inst-steps"></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="restm">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="restm-t">
+    <div class="grab"></div>
+    <div class="sheet-head"><h2 id="restm-t">Rest</h2><button class="close" data-close aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="sheet-body">
+      <div class="pat" id="restm-chips"></div>
+      <div class="field"><label for="restm-in">Custom rest</label>
+        <div class="rest-custom"><input id="restm-in" class="text-in" placeholder="e.g. 75s, 2.5 min" autocomplete="off" enterkeyhint="done"><button class="btn primary" id="restm-ok">Set</button></div></div>
+      <button class="custom-link" id="restm-all" hidden><svg class="i"><use href="#i-repeat"/></svg>Use this rest for every set</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-t"></span><button id="toast-undo" hidden>Undo</button></div>
 <script>
 (function(){
 "use strict";
-const GYM="Raptor Gym", COACH="Gavy";
+const COACH="Gavy", ROLE="Personal Trainer";
 const MUSCLES=["Chest","Back","Shoulders","Legs","Arms","Core","Cardio"];
 const T="time";
 const RAW=[
@@ -928,14 +992,36 @@ function estimate(){
     b.forEach(i=>{const x=it[i],ex=getEx(x.exId);
       if(pro){rounds=Math.max(rounds,x.sets.length);x.sets.forEach(s=>{t+=isTime(ex)?secs(s.reps):40;t+=s.drops.length*30})}
       else{const n=+x.sets||1;rounds=Math.max(rounds,n);t+=(isTime(ex)?secs(x.reps):40)*n}});
-    const last=it[b[b.length-1]];if(getEx(last.exId).muscle!=="Cardio")t+=secs(last.rest)*Math.max(rounds-1,0);t+=60});
+    const last=it[b[b.length-1]];if(getEx(last.exId).muscle!=="Cardio"){for(let j=0;j<rounds-1;j++)t+=secs(pro?restOf(last,j):last.rest)}t+=60});
   return Math.max(5,Math.round(t/60/5)*5);
 }
 function rerenderKeep(){const y=window.scrollY;renderItems();window.scrollTo(0,y)}
+const REST_MORE=["15s","30s","45s","60s","75s","90s","2 min","2.5 min","3 min","4 min","5 min"];
+function restOf(x,j){return (x.sets&&x.sets[j]&&x.sets[j].rest)||x.rest}
+function restVaries(x){return !!(Array.isArray(x.sets)&&x.sets.slice(0,-1).some(s=>s.rest&&s.rest!==x.rest))}
+function normRest(v){v=String(v||"").trim().toLowerCase();if(!v)return"";if(/^\d+(\.\d+)?$/.test(v))return(+v>=10?v+"s":v+" min");return v.replace(/\s*sec(onds?)?$/,"s").replace(/\s*mins?$|\s*minutes?$/," min").replace(/^(\d+(?:\.\d+)?)\s*s$/,"$1s")}
+let restCtx=null;
+function openRest(u,j){const it=cur().items,x=it.find(y=>y.uid===u);if(!x)return;restCtx={u,j};
+  const curv=j==null?x.rest:restOf(x,j),ex=getEx(x.exId);
+  let lab="";if(j!=null){let wn=0;x.sets.forEach((q,i)=>{if(q.type!=="warm")wn++;if(i===j)lab=q.type==="warm"?"warm-up":"set "+wn})}
+  $("#restm-t").textContent=j==null?`Rest · ${ex.name}`:`Rest after ${lab}`;
+  $("#restm-chips").innerHTML=REST_MORE.map(v=>`<button data-rv="${v}" aria-pressed="${curv===v}">${v}</button>`).join("");
+  $("#restm-in").value=REST_MORE.includes(curv)?"":curv;$("#restm-all").hidden=j==null||!PRO();openSheet("#restm",false)}
+function applyRest(v,all){v=normRest(v);if(!v)return;const x=cur().items.find(y=>y.uid===restCtx.u);if(!x)return;
+  if(restCtx.j==null||all){x.rest=v;if(x.sets&&Array.isArray(x.sets))x.sets.forEach(s=>{delete s.rest})}
+  else{x.sets[restCtx.j].rest=v===x.rest?undefined:v;if(x.sets[restCtx.j].rest===undefined)delete x.sets[restCtx.j].rest}
+  save();closeSheets(true);rerenderKeep();renderMeta();toast(all||restCtx.j==null?`Rest set to ${v}`:`Rest after this set: ${v}`)}
+$("#restm-chips").addEventListener("click",e=>{const b=e.target.closest("[data-rv]");if(b)applyRest(b.dataset.rv)});
+$("#restm-ok").onclick=()=>applyRest($("#restm-in").value);
+$("#restm-in").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();applyRest(e.target.value)}});
+$("#restm-all").onclick=()=>{const x=cur().items.find(y=>y.uid===restCtx.u);applyRest(restOf(x,restCtx.j),true)};
+function restGap(x,j,ctx){const v=restOf(x,j),own=!!(x.sets[j].rest&&x.sets[j].rest!==x.rest);
+  return`<button class="rest-gap${own?" own":""}" data-act="setrest" data-j="${j}" aria-label="Rest after this set: ${esc(v)}. Tap to change"><span>${icon("clock")}${esc(v)} ${ctx.inGroup?"after round":"rest"}</span></button>`}
 function restField(x,ctx){
   const ex=getEx(x.exId);if(ex.muscle==="Cardio")return"";
   if(ctx.inGroup&&!ctx.isLastInGroup)return`<div class="field"><span class="flabel">Rest</span><div class="no-rest">No rest, go straight to the next exercise</div></div>`;
-  return`<div class="field"><span class="flabel">${ctx.inGroup?"Rest after each round":"Rest between sets"}</span><div class="seg">${RESTS.map(v=>`<button data-set="rest" data-v="${v}" aria-pressed="${x.rest===v}">${v}</button>`).join("")}</div></div>`;
+  const other=!RESTS.includes(x.rest);
+  return`<div class="field"><span class="flabel">${ctx.inGroup?"Rest after each round":"Rest between sets"}${PRO()&&restVaries(x)?' <span class="varies">varies per set</span>':""}</span><div class="seg">${RESTS.map(v=>`<button data-set="rest" data-v="${v}" aria-pressed="${x.rest===v&&!(PRO()&&restVaries(x))}">${v}</button>`).join("")}<button data-act="restother" aria-pressed="${other}">${other?esc(x.rest):"Other"}</button></div></div>`;
 }
 function linkRow(x,idx,n,items){
   return idx<n-1?`<button class="toggle-row" data-act="link" role="switch" aria-checked="${!!x.link}"><span class="t"><strong>Superset with next</strong><small>Do this and ${esc(getEx(items[idx+1].exId).name)} back to back</small></span><span class="switch"></span></button>`:"";
@@ -1007,6 +1093,7 @@ function quickClick(e){
     if(f==="sets")x.sets=Math.min(10,Math.max(1,(+x.sets||0)+d));
     else{const c=parseFloat(String(x.kg).split("/").pop())||0;const v=Math.max(0,c+d);x.kg=v?String(+v.toFixed(1)):""}
     save();rerenderKeep();return}
+  if(b.dataset.act==="restother"){openRest(x.uid,null);return}
   commonAct(b.dataset.act,x,i,it);
 }
 function quickInput(e){
@@ -1048,6 +1135,7 @@ function proExHTML(x,idx,label,ctx){
         <label class="cell"><input data-pf="dkg" data-j="${j}" data-k="${k}" value="${esc(d.kg)}" inputmode="decimal" enterkeyhint="next" placeholder="—" aria-label="Drop ${k+1} weight in kg"><span>kg</span></label>
         <label class="cell"><input data-pf="dreps" data-j="${j}" data-k="${k}" value="${esc(d.reps)}" inputmode="numeric" enterkeyhint="next" placeholder="max" aria-label="Drop ${k+1} reps"><span>reps</span></label>
         <button class="set-more" data-act="deldrop" data-j="${j}" data-k="${k}" aria-label="Remove this drop">${icon("x")}</button></div>`});
+      if(j<x.sets.length-1&&ex.muscle!=="Cardio"&&!notLast)h+=restGap(x,j,ctx);
     });
     h+=`<div class="set-tools"><button class="tool" data-act="addset">${icon("plus")}Set</button><button class="tool" data-act="adddrop">${icon("dropi")}Drop</button><button class="tool fill" data-act="fill">${icon("wand")}Quick fill</button></div>
       ${restField(x,ctx)}
@@ -1063,9 +1151,11 @@ function focusSet(u,sel){requestAnimationFrame(()=>{const el=document.querySelec
 function proClick(e){
   const card=e.target.closest(".ex");if(!card)return;const b=e.target.closest("button");if(!b)return;
   const it=S.pro.items,i=it.findIndex(x=>x.uid===card.dataset.uid),x=it[i],j=+b.dataset.j,k=+b.dataset.k;
-  if(b.dataset.set){x[b.dataset.set]=b.dataset.v;save();rerenderKeep();return}
+  if(b.dataset.set){x[b.dataset.set]=b.dataset.v;if(b.dataset.set==="rest")x.sets.forEach(q=>{delete q.rest});save();rerenderKeep();renderMeta();return}
   const a=b.dataset.act;
-  if(a==="addset"){const last=x.sets[x.sets.length-1]||st("",12);x.sets.push({kg:last.kg,reps:last.reps,type:last.type==="warm"?"warm":"work",drops:[]});save();rerenderKeep();renderMeta();focusSet(x.uid,`[data-pf="kg"][data-j="${x.sets.length-1}"]`);return}
+  if(a==="setrest"){openRest(x.uid,j);return}
+  if(a==="restother"){openRest(x.uid,null);return}
+  if(a==="addset"){const last=x.sets[x.sets.length-1]||st("",12);x.sets.push(Object.assign({kg:last.kg,reps:last.reps,type:last.type==="warm"?"warm":"work",drops:[]},last.rest?{rest:last.rest}:{}));save();rerenderKeep();renderMeta();focusSet(x.uid,`[data-pf="kg"][data-j="${x.sets.length-1}"]`);return}
   if(a==="adddrop"){const ws=x.sets.filter(s=>s.type!=="warm");const s=ws[ws.length-1]||x.sets[x.sets.length-1];addDrop(s);save();rerenderKeep();renderMeta();
     const jj=x.sets.indexOf(s);focusSet(x.uid,`[data-pf="dkg"][data-j="${jj}"][data-k="${s.drops.length-1}"]`);return}
   if(a==="deldrop"){x.sets[j].drops.splice(k,1);save();rerenderKeep();renderMeta();return}
@@ -1280,14 +1370,16 @@ function model(){
     const exs=b.map((i,k)=>{const x=it[i],ex=getEx(x.exId),letter=String.fromCharCode(65+k),timed=isTime(ex);
       const E={label:group?no+letter:String(no),letter,ex,name:ex.name,note:x.note,timed,tags:[],rows:null,line:"",method:""};
       if(pro){E.tags=proTags(x);E.rows=[];let wn=0;
-        x.sets.forEach(s=>{const lab=s.type==="warm"?"W":String(++wn);
-          E.rows.push({set:lab+(s.type==="fail"?" F":s.type==="rp"?" RP":""),kg:s.kg?fk(s.kg):"",reps:String(s.reps||"").trim()||(timed?"-":"max"),type:s.type});
+        E.restVaries=restVaries(x)&&(!group||k===b.length-1);
+        x.sets.forEach((s,j)=>{const lab=s.type==="warm"?"W":String(++wn);
+          E.rows.push({set:lab+(s.type==="fail"?" F":s.type==="rp"?" RP":""),kg:s.kg?fk(s.kg):"",reps:String(s.reps||"").trim()||(timed?"-":"max"),type:s.type,rest:j<x.sets.length-1?restOf(x,j):""});
           s.drops.forEach(d=>E.rows.push({set:"drop",kg:d.kg?fk(d.kg):"",reps:String(d.reps||"").trim()||"max",type:"drop"}))});
       }else{E.line=dose(x,ex)+(!group&&ex.muscle!=="Cardio"?` · rest ${x.rest}`:"");E.method=method(x);if(x.tech!=="normal")E.tags=[TECH.find(t=>t[0]===x.tech)[1]]}
       return E});
     const lx=it[b[b.length-1]],lex=getEx(lx.exId);
-    const rest=lex.muscle==="Cardio"?"":group?`Rest ${lx.rest} after each round`:(pro&&lx.sets.length>1?`Rest ${lx.rest} between sets`:"");
-    return {no,group,name:group?groupName(b.length):exs[0].name,exs,rest,restVal:lex.muscle==="Cardio"?"":lx.rest}});
+    const varies=pro&&restVaries(lx);
+    const rest=lex.muscle==="Cardio"?"":varies?(group?"Rest after each round changes per round (see table)":"Rest changes per set (see table)"):group?`Rest ${lx.rest} after each round`:(pro&&lx.sets.length>1?`Rest ${lx.rest} between sets`:"");
+    return {no,group,name:group?groupName(b.length):exs[0].name,exs,rest,restVal:lex.muscle==="Cardio"?"":varies?"":lx.rest}});
   return {title:w.title.trim()||"Today’s workout",count:it.length,est:estimate(),blocks:bl};
 }
 function tableLines(E){
@@ -1302,21 +1394,21 @@ function setLines(E){
   const o=[];
   if(!E.rows){o.push(["li",E.line]);if(E.method)o.push(["sub","↳ "+E.method]);return o}
   const work=E.rows.filter(r=>r.type!=="drop");
-  const same=work.length>1&&!E.rows.some(r=>r.type!=="work")&&work.every(r=>r.kg===work[0].kg&&r.reps===work[0].reps);
+  const same=!E.restVaries&&work.length>1&&!E.rows.some(r=>r.type!=="work")&&work.every(r=>r.kg===work[0].kg&&r.reps===work[0].reps);
   const val=r=>{const reps=E.timed?r.reps:(r.reps==="max"?"max reps":r.reps);return r.kg?`*${r.kg} kg × ${reps}*`:`*${E.timed?reps:reps+(r.reps==="max"?"":" reps")}*`};
   if(same){const r=work[0];o.push(["li",`${work.length} sets × ${E.timed?r.reps:r.reps+" reps"}${r.kg?` · *${r.kg} kg*`:""}`]);return o}
   E.rows.forEach(r=>{
     if(r.type==="drop"){o.push(["sub",`↳ Drop: ${val(r)}`]);return}
     const n=r.set.replace(/ (F|RP)$/,"");
     const lab=r.type==="warm"?"Warm-up":`Set ${n}`;
-    o.push(["li",`${lab}: ${val(r)}${r.type==="fail"?" _to failure_":r.type==="rp"?" _+ rest-pause_":""}`]);
+    o.push(["li",`${lab}: ${val(r)}${r.type==="fail"?" _to failure_":r.type==="rp"?" _+ rest-pause_":""}${E.restVaries&&r.rest?` · rest ${r.rest}`:""}`]);
   });
   return o;
 }
 function buildMsg(wl){
   const M=model(),m=member(),o=[],vids=[];
   const date=new Date().toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"});
-  o.push(["n","🦖 *RAPTOR GYM*"]);
+  o.push(["n",`💪 *COACH ${COACH.toUpperCase()}*`]);
   o.push(["n",`Hi ${first(m&&m.name)} 👋 Here’s your workout for today.`]);
   o.push(["s"]);
   o.push(["n",`🏋️ *${M.title.toUpperCase()}*`]);
@@ -1333,7 +1425,7 @@ function buildMsg(wl){
       vids.push([E.label,E.ex]);
     }else{
       o.push(["n",`*${B.no} · ${B.name.toUpperCase()}*`]);
-      o.push(["n",`_Do ${B.exs.map(e=>e.letter).join(" → ")} back to back, then rest ${B.restVal||"60s"}_`]);
+      o.push(["n",`_Do ${B.exs.map(e=>e.letter).join(" → ")} back to back, then ${B.restVal?"rest "+B.restVal:"rest as listed"}_`]);
       B.exs.forEach(E=>{
         o.push(["n",`*${E.letter}.* ${E.name}${E.tags.length?`  _${E.tags.filter(t=>!/^Tempo/.test(t)).join(" · ")}_`:""}`]);
         setLines(E).forEach(l=>o.push(l));
@@ -1345,7 +1437,7 @@ function buildMsg(wl){
   if(wl&&vids.length){o.push(["s"]);o.push(["n","▶️ *How-to videos*"]);vids.forEach(([l,ex])=>{o.push(["li",`*${l}* ${ex.name}`]);o.push(["sub",vid(ex)])})}
   o.push(["s"]);
   o.push(["n","Reply *DONE* ✅ when you finish."]);
-  o.push(["n",`_— Coach ${COACH}, ${GYM}_`]);
+  o.push(["n",`_— Coach ${COACH}, ${ROLE}_`]);
   return o;
 }
 function waText(wl){return buildMsg(wl).map(([t,s])=>t==="s"?"":t==="li"?"- "+s:t==="sub"?"    "+s:t==="q"?"> "+s:s).join("\n")}
@@ -1392,6 +1484,9 @@ $("#copy").onclick=async()=>{const txt=waText(S.links!==false);let ok=false;
 /* image card (dark) with exercise illustrations */
 let downloads=null;
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+const PHOTO_CACHE={};
+function loadPhoto(ex){if(!ex||ex.custom)return Promise.resolve(null);const src=`ex/${ex.id}.jpg`;
+  if(!PHOTO_CACHE[src])PHOTO_CACHE[src]=new Promise(r=>{const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=src});return PHOTO_CACHE[src]}
 async function makeImage(){
   try{await document.fonts.load("700 40px Urbanist");await document.fonts.ready}catch(e){}
   const W=1080,P=48,c=document.createElement("canvas"),ctx=c.getContext("2d"),ops=[];let y=0;
@@ -1400,23 +1495,26 @@ async function makeImage(){
   function wrap(t,f,mw){ctx.font=f;const w=String(t).split(" "),o=[];let l="";w.forEach(x=>{const s=l?l+" "+x:x;if(ctx.measureText(s).width>mw&&l){o.push(l);l=x}else l=s});o.push(l);return o}
   function text(t,f,cl,x,lh,mw,align){wrap(t,f,mw).forEach(l=>{ops.push({k:"t",t:l,f,cl,x,y:y+lh*.74,align});y+=lh})}
   const M=model(),m=member();
+  await Promise.all(M.blocks.flatMap(B=>B.exs).map(async E=>{E.photo=await loadPhoto(E.ex)}));
   /* header */
   y=P+4;ops.push({k:"logo",x:P,y});
-  ctx.font=Fn(800,30);ops.push({k:"t",t:"RAPTOR GYM",f:Fn(800,30),cl:"#FFFFFF",x:P+80,y:y+30});ops.push({k:"t",t:"Coach "+COACH,f:Fn(600,24),cl:"rgba(255,255,255,.85)",x:P+80,y:y+62});
+  ctx.font=Fn(800,30);ops.push({k:"t",t:"COACH "+COACH.toUpperCase(),f:Fn(800,30),cl:"#FFFFFF",x:P+80,y:y+30});ops.push({k:"t",t:ROLE,f:Fn(600,24),cl:"rgba(255,255,255,.85)",x:P+80,y:y+62});
   y+=104;
   text(M.title,Fn(800,68),"#FFFFFF",P,78,W-P*2);
   y+=6;text(`For ${m?m.name:"you"}  ·  ${new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"})}`,Fn(600,28),"rgba(255,255,255,.9)",P,40,W-P*2);
   y+=14;ops.push({k:"chips",x:P,y,items:[`${M.count} exercises`,`About ${M.est} min`]});y+=52+P;ops.unshift({k:"band",h:y});y+=36;
   const TILE=196;
   function exCard(E,x0,w,badgeBg,badgeCol){
-    const top=y,pad=26,tx=x0+pad+TILE+28,tw=x0+w-pad-tx;const si=ops.length;
-    ops.push({k:"tile",x:x0+pad,y:top+pad,s:TILE,pose:poseFor(E.ex),badge:E.label,bb:badgeBg,bc:badgeCol});
-    y=top+pad+2;
+    const pad=26,top=y,si=ops.length,ph=!!E.photo;
+    const tx=ph?x0+pad:x0+pad+TILE+28,tw=x0+w-pad-tx;
+    if(ph){const pw=w-pad*2,phh=Math.round(pw/3);ops.push({k:"photo",x:x0+pad,y:top+pad,w:pw,h:phh,img:E.photo,badge:E.label,bb:badgeBg,bc:badgeCol});y=top+pad+phh+22}
+    else{ops.push({k:"tile",x:x0+pad,y:top+pad,s:TILE,pose:poseFor(E.ex),badge:E.label,bb:badgeBg,bc:badgeCol});y=top+pad+2}
     text(E.name,Fn(700,36),C.ink,tx,44,tw);
     if(E.tags.length){y+=2;text(E.tags.join("  ·  "),Fn(600,23),C.amber,tx,32,tw)}
     y+=12;
     if(E.rows){
-      const showKg=E.rows.some(r=>r.kg),c1=tx,c2=tx+(showKg?250:0),c3=tx+(showKg?tw:tw);
+      const showKg=E.rows.some(r=>r.kg),showRest=!!E.restVaries,c1=tx,c2=tx+(showKg?(ph?330:250):0),c3=showRest?tx+tw-150:tx+tw,c4=tx+tw;
+      if(showRest)ops.push({k:"t",t:"REST",f:Fn(700,19),cl:C.muted,x:c4,y:y+20,align:"right"});
       ops.push({k:"t",t:"SET",f:Fn(700,19),cl:C.muted,x:c1,y:y+20});if(showKg)ops.push({k:"t",t:"KG",f:Fn(700,19),cl:C.muted,x:c2,y:y+20,align:"right"});
       ops.push({k:"t",t:E.timed?"TIME":"REPS",f:Fn(700,19),cl:C.muted,x:c3,y:y+20,align:"right"});y+=34;
       E.rows.forEach((r,i)=>{const h=44,drop=r.type==="drop";
@@ -1424,13 +1522,14 @@ async function makeImage(){
         const cl=drop?C.amber:r.type==="warm"?C.muted:C.ink;
         ops.push({k:"t",t:drop?"↳ drop":r.set==="W"?"Warm-up":r.set,f:Fn(drop?600:700,26),cl:r.type==="fail"||r.type==="rp"?"#E5484D":cl,x:c1,y:y+28});
         if(showKg)ops.push({k:"t",t:r.kg?r.kg+" kg":"–",f:Fn(700,26),cl,x:c2,y:y+28,align:"right"});
-        ops.push({k:"t",t:r.reps,f:Fn(700,26),cl,x:c3,y:y+28,align:"right"});y+=h});
+        ops.push({k:"t",t:r.reps,f:Fn(700,26),cl,x:c3,y:y+28,align:"right"});
+        if(showRest&&r.rest)ops.push({k:"t",t:r.rest,f:Fn(600,22),cl:C.set,x:c4,y:y+27,align:"right"});y+=h});
     }else{
       ops.push({k:"row",x:tx-12,y,w:tw+24,h:52,cl:"#F5F4F9"});ops.push({k:"t",t:E.line,f:Fn(700,27),cl:C.ink,x:tx,y:y+35});y+=62;
       if(E.method)text(E.method,Fn(600,23),C.amber,tx,32,tw);
     }
     if(E.note){y+=6;text("“"+E.note+"”",Fn(400,24),C.ink2,tx,34,tw)}
-    y=Math.max(y,top+pad+TILE)+pad;
+    y=(ph?y:Math.max(y,top+pad+TILE))+pad;
     ops.splice(si,0,{k:"card",x:x0,y:top,w,h:y-top,cl:C.card});
   }
   M.blocks.forEach(B=>{
@@ -1443,17 +1542,21 @@ async function makeImage(){
       ops.splice(si,0,{k:"card",x:P,y:top,w:W-P*2,h:y-top,cl:C.setCard,border:"#DCD4FF"});y+=22}
   });
   y+=10;ops.push({k:"line",y});y+=30;
-  text(`Coach ${COACH}  ·  ${GYM}`,Fn(600,24),C.muted,P,32,W-P*2);y+=P;
+  text(`Coach ${COACH}  ·  ${ROLE}`,Fn(600,24),C.muted,P,32,W-P*2);y+=P;
   c.width=W;c.height=Math.ceil(y);
   ctx.fillStyle=C.bg;ctx.fillRect(0,0,W,c.height);
   ops.forEach(o=>{
     if(o.k==="band"){ctx.fillStyle=C.violet;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(W,0);ctx.lineTo(W,o.h-56);ctx.arcTo(W,o.h,W-56,o.h,56);ctx.lineTo(56,o.h);ctx.arcTo(0,o.h,0,o.h-56,56);ctx.closePath();ctx.fill()}
     else if(o.k==="t"){ctx.font=o.f;ctx.fillStyle=o.cl;ctx.textAlign=o.align||"left";ctx.fillText(o.t,o.x,o.y);ctx.textAlign="left"}
     else if(o.k==="logo"){ctx.fillStyle="#FFFFFF";rr(ctx,o.x,o.y,64,64,20);ctx.fill();
-      ctx.fillStyle=C.violet;ctx.font=Fn(900,32);ctx.textAlign="center";ctx.fillText("R",o.x+32,o.y+43);ctx.textAlign="left"}
+      ctx.fillStyle=C.violet;ctx.font=Fn(900,32);ctx.textAlign="center";ctx.fillText(COACH[0].toUpperCase(),o.x+32,o.y+43);ctx.textAlign="left"}
     else if(o.k==="chips"){ctx.font=Fn(600,24);o.items.reduce((x,s)=>{const w=ctx.measureText(s).width+40;ctx.fillStyle=C.lime;rr(ctx,x,o.y,w,52,26);ctx.fill();ctx.fillStyle=C.ink;ctx.fillText(s,x+20,o.y+34);return x+w+12},o.x)}
     else if(o.k==="card"){ctx.fillStyle=o.cl;rr(ctx,o.x,o.y,o.w,o.h,28);ctx.fill();ctx.strokeStyle=o.border||C.line;ctx.lineWidth=2;ctx.stroke()}
     else if(o.k==="row"){ctx.fillStyle=o.cl;rr(ctx,o.x,o.y,o.w,o.h,10);ctx.fill()}
+    else if(o.k==="photo"){ctx.save();rr(ctx,o.x,o.y,o.w,o.h,22);ctx.clip();ctx.fillStyle=C.tile;ctx.fillRect(o.x,o.y,o.w,o.h);ctx.drawImage(o.img,o.x,o.y,o.w,o.h);
+      ctx.fillStyle="rgba(255,255,255,.9)";ctx.fillRect(o.x+o.w/2-1,o.y,2,o.h);ctx.restore();
+      ctx.font=Fn(800,24);const bw=Math.max(48,ctx.measureText(o.badge).width+26);ctx.fillStyle=o.bb;rr(ctx,o.x+12,o.y+12,bw,42,13);ctx.fill();ctx.fillStyle=o.bc;ctx.textAlign="center";ctx.fillText(o.badge,o.x+12+bw/2,o.y+42);
+      ctx.font=Fn(700,19);[["Start",o.x+14],["Finish",o.x+o.w/2+14]].forEach(([t,lx])=>{const tw2=ctx.measureText(t).width+24;ctx.fillStyle="rgba(18,18,18,.72)";rr(ctx,lx,o.y+o.h-46,tw2,32,16);ctx.fill();ctx.fillStyle="#FFFFFF";ctx.textAlign="left";ctx.fillText(t,lx+12,o.y+o.h-24)});ctx.textAlign="left"}
     else if(o.k==="tile"){ctx.fillStyle=C.tile;rr(ctx,o.x,o.y,o.s,o.s,22);ctx.fill();drawPose(ctx,o.pose,o.x+20,o.y+34,o.s-40);
       ctx.font=Fn(800,24);const bw=Math.max(44,ctx.measureText(o.badge).width+24);ctx.fillStyle=o.bb;rr(ctx,o.x+10,o.y+10,bw,40,12);ctx.fill();
       ctx.fillStyle=o.bc;ctx.textAlign="center";ctx.fillText(o.badge,o.x+10+bw/2,o.y+39);ctx.textAlign="left"}
@@ -1498,6 +1601,23 @@ function fitBar(){document.documentElement.style.setProperty("--bar-h",Math.ceil
 fitBar();window.addEventListener("resize",fitBar);if(window.visualViewport)window.visualViewport.addEventListener("resize",fitBar);
 if(window.ResizeObserver)new ResizeObserver(fitBar).observe(barEl);
 renderAll();
+
+/* hero date + PWA install */
+$("#hero-date").textContent=new Date().toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"});
+const standalone=()=>(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+let deferredPrompt=null;
+function renderInstall(){const show=!standalone();$("#install-btn").hidden=!show;$("#hero-date").hidden=show}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;renderInstall()});
+window.addEventListener("appinstalled",()=>{deferredPrompt=null;renderInstall();toast("App installed")});
+$("#install-btn").onclick=async()=>{
+  if(deferredPrompt){deferredPrompt.prompt();const r=await deferredPrompt.userChoice.catch(()=>null);deferredPrompt=null;if(r&&r.outcome==="accepted")toast("Installing…");renderInstall();return}
+  $("#inst-steps").innerHTML=isIOS
+    ?`<div class="inst-step"><b>1</b><span>Open this page in <strong>Safari</strong>.</span></div><div class="inst-step"><b>2</b><span>Tap the <strong>Share</strong> button at the bottom of the screen.</span></div><div class="inst-step"><b>3</b><span>Choose <strong>Add to Home Screen</strong>, then tap <strong>Add</strong>.</span></div>`
+    :`<div class="inst-step"><b>1</b><span>Open this page in <strong>Chrome</strong>.</span></div><div class="inst-step"><b>2</b><span>Tap the <strong>⋮ menu</strong> at the top right.</span></div><div class="inst-step"><b>3</b><span>Choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</span></div>`;
+  openSheet("#inst",false)};
+renderInstall();
+if("serviceWorker" in navigator&&location.protocol==="https:"){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{}))}
 })();
 
 </script>

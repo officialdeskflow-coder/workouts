@@ -1,33 +1,37 @@
-# Raptor Gym · Workout Sender
+# Coach Gavy · Workout Sender
 
-A simple app for Coach Gavy to build a workout and send it to a member on WhatsApp.
+A mobile-first app for a coach to build a workout and send it to a member on WhatsApp,
+as a formatted message or as an image with real exercise photos.
 
 ## Folder
 
 ```
-raptor-workout/
-├── public/
-│   ├── index.html    the whole app (HTML, CSS, JS in one file)
-│   └── _headers      cache and security headers
-├── wrangler.jsonc    Cloudflare settings
-├── .gitignore
-└── README.md
+public/
+├── index.html            the app (HTML, CSS, JS in one file)
+├── manifest.webmanifest  PWA install settings
+├── sw.js                 service worker (offline + install)
+├── _headers              cache and content-type headers
+├── icons/                app icons (home screen, splash)
+└── ex/                   exercise photos, start and finish (one .jpg per exercise)
+wrangler.jsonc            Cloudflare settings
 ```
 
 ## Deploy on Cloudflare (Git)
 
 1. Push this folder to GitHub as the repo root.
-2. In Cloudflare: Workers & Pages → Create → Import a repository.
-3. Build command: leave empty. Deploy command: `npx wrangler deploy`.
-4. Deploy. Every push to `main` redeploys.
+2. Build command: leave empty. Deploy command: `npx wrangler deploy`.
+3. Every push to `main` redeploys.
 
-## Run locally
+## Install as an app (PWA)
 
-Open `public/index.html` in a browser, or run `npx wrangler dev` and open the local address.
+- Android (Chrome): tap **Install** in the app header, then confirm.
+- iPhone (Safari): tap **Install** in the app header and follow the steps (Share → Add to Home Screen).
+
+Installing needs HTTPS, which Cloudflare provides.
 
 ## Notes
 
-- Members, plans and history are saved in the browser of the device in use (localStorage).
-  Clearing browser data removes them.
-- "Share image" opens the phone share sheet (choose WhatsApp). On a laptop it downloads a PNG.
-- Exercise videos are YouTube search links unless the coach adds their own link to a custom exercise.
+- Members, plans and history are saved on the device in use (browser storage).
+- Exercise photos come from Free Exercise DB (github.com/yuhonas/free-exercise-db), released under the Unlicense (public domain).
+- Custom exercises have no photo, so the shared image shows a simple illustration for them.
+- To change the coach name, edit `COACH` and `ROLE` at the top of the script in `index.html`, plus the name in the hero and in `manifest.webmanifest`.
