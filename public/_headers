@@ -2,7 +2,16 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
 
+/
+  Cache-Control: no-cache
+
 /index.html
+  Cache-Control: no-cache
+
+/diet/
+  Cache-Control: no-cache
+
+/diet/index.html
   Cache-Control: no-cache
 
 /sw.js

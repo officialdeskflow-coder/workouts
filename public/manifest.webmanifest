@@ -1,16 +1,22 @@
 {
-  "name": "Coach Gavy · Workouts",
-  "short_name": "Workouts",
-  "description": "Build workouts and send them to members on WhatsApp.",
+  "id": "/",
+  "name": "Coach Gavy · Workout & Diet",
+  "short_name": "Coach Gavy",
+  "description": "Build workouts and diet charts and send them to members on WhatsApp.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#F3F2F8",
   "theme_color": "#7B67EE",
+  "categories": ["health", "fitness", "lifestyle"],
   "icons": [
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
     { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Workout", "url": "/", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Diet chart", "url": "/diet/", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

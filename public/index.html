@@ -7,6 +7,7 @@
 <title>Coach Gavy · Workouts</title>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -568,6 +569,12 @@ html{scroll-padding-top:16px}
 .hero-install{white-space:nowrap}
 @media (max-width:380px){.x-app{display:none}.hero-install{padding:0 12px}.hero-title{margin-top:16px}.hi span{font-size:16.5px}.lime-pill{font-size:12px;padding:0 10px 0 8px}}
 .inst-step b{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--lime);display:grid;place-items:center;font-weight:800}
+
+/* module switch: Workout | Diet */
+.modsw{display:flex;gap:4px;margin:16px 0 0;padding:4px;border-radius:999px;background:rgba(255,255,255,.16)}
+.modsw a{flex:1;display:flex;align-items:center;justify-content:center;height:40px;border-radius:999px;color:#fff;font-weight:700;font-size:15px;text-decoration:none}
+.modsw a.on{background:#fff;color:var(--ink)}
+.modsw+.hero-title{margin-top:18px}
 </style>
 </head>
 <body>
@@ -604,10 +611,11 @@ html{scroll-padding-top:16px}
       <div class="logo" aria-hidden="true">G</div>
       <div class="hi"><span>Coach Gavy</span><b class="lime-pill"><svg class="i"><use href="#i-crown"/></svg>Personal Trainer</b></div>
       <div class="hero-right">
-        <button class="hero-install" id="install-btn" hidden><svg class="i"><use href="#i-download"/></svg>Install<span class="x-app">&nbsp;app</span></button>
+        <button class="hero-install" id="install-btn" hidden><svg class="i"><use href="#i-download"/></svg>Install<span class="x-app">app</span></button>
         <span class="hero-date" id="hero-date"></span>
       </div>
     </div>
+    <nav class="modsw" aria-label="Switch tool"><a href="/" class="on" aria-current="page">Workout</a><a href="/diet/" id="to-diet">Diet</a></nav>
     <h1 class="hero-title">Build today’s<br>workout</h1>
     <div class="tabs" role="tablist" aria-label="Builder mode">
       <button role="tab" id="tab-quick" data-mode="quick">Basic</button>
@@ -933,6 +941,7 @@ function renderTabs(){["quick","pro"].forEach(m=>$("#tab-"+m).setAttribute("aria
 /* member */
 function renderMember(){
   const m=member();
+  const td=document.getElementById("to-diet");if(td)td.href="/diet/"+(m?"?m="+encodeURIComponent(m.id):"");
   $("#member-btn").innerHTML=`<span class="avatar">${esc(initials(m?m.name:"?"))}</span>
     <span class="who"><small>Workout for</small><strong>${esc(m?m.name:"Choose a member")}</strong></span>
     <span class="chev">Change${icon("down","width:16px;height:16px")}</span>`;
@@ -1371,9 +1380,10 @@ function model(){
       const E={label:group?no+letter:String(no),letter,ex,name:ex.name,note:x.note,timed,tags:[],rows:null,line:"",method:""};
       if(pro){E.tags=proTags(x);E.rows=[];let wn=0;
         E.restVaries=restVaries(x)&&(!group||k===b.length-1);
+        E.showRest=!group&&ex.muscle!=="Cardio"&&x.sets.length>1;
         x.sets.forEach((s,j)=>{const lab=s.type==="warm"?"W":String(++wn);
           E.rows.push({set:lab+(s.type==="fail"?" F":s.type==="rp"?" RP":""),kg:s.kg?fk(s.kg):"",reps:String(s.reps||"").trim()||(timed?"-":"max"),type:s.type,rest:j<x.sets.length-1?restOf(x,j):""});
-          s.drops.forEach(d=>E.rows.push({set:"drop",kg:d.kg?fk(d.kg):"",reps:String(d.reps||"").trim()||"max",type:"drop"}))});
+          s.drops.forEach(d=>E.rows.push({set:"drop",kg:d.kg?fk(d.kg):"",reps:String(d.reps||"").trim()||"max",type:"drop",rest:j<x.sets.length-1?restOf(x,j):""}))});
       }else{E.line=dose(x,ex)+(!group&&ex.muscle!=="Cardio"?` · rest ${x.rest}`:"");E.method=method(x);if(x.tech!=="normal")E.tags=[TECH.find(t=>t[0]===x.tech)[1]]}
       return E});
     const lx=it[b[b.length-1]],lex=getEx(lx.exId);
@@ -1394,14 +1404,16 @@ function setLines(E){
   const o=[];
   if(!E.rows){o.push(["li",E.line]);if(E.method)o.push(["sub","↳ "+E.method]);return o}
   const work=E.rows.filter(r=>r.type!=="drop");
-  const same=!E.restVaries&&work.length>1&&!E.rows.some(r=>r.type!=="work")&&work.every(r=>r.kg===work[0].kg&&r.reps===work[0].reps);
+  const same=!E.restVaries&&!E.rows.some(r=>r.type==="drop")&&work.length>1&&!E.rows.some(r=>r.type!=="work")&&work.every(r=>r.kg===work[0].kg&&r.reps===work[0].reps);
   const val=r=>{const reps=E.timed?r.reps:(r.reps==="max"?"max reps":r.reps);return r.kg?`*${r.kg} kg × ${reps}*`:`*${E.timed?reps:reps+(r.reps==="max"?"":" reps")}*`};
-  if(same){const r=work[0];o.push(["li",`${work.length} sets × ${E.timed?r.reps:r.reps+" reps"}${r.kg?` · *${r.kg} kg*`:""}`]);return o}
-  E.rows.forEach(r=>{
-    if(r.type==="drop"){o.push(["sub",`↳ Drop: ${val(r)}`]);return}
+  const rs=v=>E.showRest&&v?`  ⏱ ${v}`:"";
+  if(same){const r=work[0];o.push(["li",`${work.length} sets × ${E.timed?r.reps:r.reps+" reps"}${r.kg?` · *${r.kg} kg*`:""}`]);if(E.showRest&&r.rest)o.push(["sub",`⏱ ${r.rest} rest between sets`]);return o}
+  E.rows.forEach((r,i)=>{
+    const next=E.rows[i+1],lastOfSet=!next||next.type!=="drop";
+    if(r.type==="drop"){o.push(["sub",`↳ Drop: ${val(r)}${lastOfSet?rs(r.rest):""}`]);return}
     const n=r.set.replace(/ (F|RP)$/,"");
     const lab=r.type==="warm"?"Warm-up":`Set ${n}`;
-    o.push(["li",`${lab}: ${val(r)}${r.type==="fail"?" _to failure_":r.type==="rp"?" _+ rest-pause_":""}${E.restVaries&&r.rest?` · rest ${r.rest}`:""}`]);
+    o.push(["li",`${lab}: ${val(r)}${r.type==="fail"?" _to failure_":r.type==="rp"?" _+ rest-pause_":""}${lastOfSet?rs(r.rest):""}${!E.showRest&&E.restVaries&&r.rest?` · rest ${r.rest}`:""}`]);
   });
   return o;
 }
@@ -1417,7 +1429,7 @@ function buildMsg(wl){
     o.push(["s"]);
     if(!B.group){const E=B.exs[0];
       o.push(["n",`*${B.no} · ${E.name}*`]);
-      const meta=E.tags.filter(t=>!/^Tempo/.test(t)).concat(B.restVal&&E.rows?[`rest ${B.restVal}`]:[]);
+      const meta=E.tags.filter(t=>!/^Tempo/.test(t)).concat(B.restVal&&E.rows&&!E.showRest?[`rest ${B.restVal}`]:[]);
       if(meta.length)o.push(["n",`_${meta.join(" · ")}_`]);
       setLines(E).forEach(l=>o.push(l));
       const tp=E.tags.find(t=>/^Tempo/.test(t));if(tp)o.push(["sub","↳ "+tp]);
@@ -1513,7 +1525,7 @@ async function makeImage(){
     if(E.tags.length){y+=2;text(E.tags.join("  ·  "),Fn(600,23),C.amber,tx,32,tw)}
     y+=12;
     if(E.rows){
-      const showKg=E.rows.some(r=>r.kg),showRest=!!E.restVaries,c1=tx,c2=tx+(showKg?(ph?330:250):0),c3=showRest?tx+tw-150:tx+tw,c4=tx+tw;
+      const showKg=E.rows.some(r=>r.kg),showRest=!!(E.restVaries||E.showRest),c1=tx,c2=tx+(showKg?(ph?330:250):0),c3=showRest?tx+tw-150:tx+tw,c4=tx+tw;
       if(showRest)ops.push({k:"t",t:"REST",f:Fn(700,19),cl:C.muted,x:c4,y:y+20,align:"right"});
       ops.push({k:"t",t:"SET",f:Fn(700,19),cl:C.muted,x:c1,y:y+20});if(showKg)ops.push({k:"t",t:"KG",f:Fn(700,19),cl:C.muted,x:c2,y:y+20,align:"right"});
       ops.push({k:"t",t:E.timed?"TIME":"REPS",f:Fn(700,19),cl:C.muted,x:c3,y:y+20,align:"right"});y+=34;
@@ -1523,7 +1535,7 @@ async function makeImage(){
         ops.push({k:"t",t:drop?"↳ drop":r.set==="W"?"Warm-up":r.set,f:Fn(drop?600:700,26),cl:r.type==="fail"||r.type==="rp"?"#E5484D":cl,x:c1,y:y+28});
         if(showKg)ops.push({k:"t",t:r.kg?r.kg+" kg":"–",f:Fn(700,26),cl,x:c2,y:y+28,align:"right"});
         ops.push({k:"t",t:r.reps,f:Fn(700,26),cl,x:c3,y:y+28,align:"right"});
-        if(showRest&&r.rest)ops.push({k:"t",t:r.rest,f:Fn(600,22),cl:C.set,x:c4,y:y+27,align:"right"});y+=h});
+        if(showRest&&r.rest&&!(E.rows[i+1]&&E.rows[i+1].type==="drop"))ops.push({k:"t",t:r.rest,f:Fn(600,22),cl:C.set,x:c4,y:y+27,align:"right"});y+=h});
     }else{
       ops.push({k:"row",x:tx-12,y,w:tw+24,h:52,cl:"#F5F4F9"});ops.push({k:"t",t:E.line,f:Fn(700,27),cl:C.ink,x:tx,y:y+35});y+=62;
       if(E.method)text(E.method,Fn(600,23),C.amber,tx,32,tw);
@@ -1533,7 +1545,7 @@ async function makeImage(){
     ops.splice(si,0,{k:"card",x:x0,y:top,w,h:y-top,cl:C.card});
   }
   M.blocks.forEach(B=>{
-    if(!B.group){exCard(B.exs[0],P,W-P*2,"#121212","#FFFFFF");if(B.rest){y+=14;ops.push({k:"clock",x:P+40,y:y+16,cl:C.muted});text(B.rest,Fn(600,24),C.muted,P+62,32,W-P*2)}y+=22}
+    if(!B.group){exCard(B.exs[0],P,W-P*2,"#121212","#FFFFFF");if(B.rest&&!B.exs[0].showRest){y+=14;ops.push({k:"clock",x:P+40,y:y+16,cl:C.muted});text(B.rest,Fn(600,24),C.muted,P+62,32,W-P*2)}y+=22}
     else{const top=y,si=ops.length;y+=24;
       text(`${B.no}  ▸  ${B.name.toUpperCase()}`,Fn(800,28),C.set,P+26,36,W-P*2);
       text(`${B.exs.map(e=>e.letter).join(" + ")} back to back, no rest between`,Fn(500,23),C.ink2,P+26,32,W-P*2);y+=14;

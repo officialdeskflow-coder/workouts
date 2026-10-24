@@ -1,13 +1,15 @@
-# Coach Gavy · Workout Sender
+# Coach Gavy · Workout & Diet
 
-A mobile-first app for a coach to build a workout and send it to a member on WhatsApp,
-as a formatted message or as an image with real exercise photos.
+A mobile-first app for a coach to build workouts and diet charts and send them to members on WhatsApp,
+as a formatted message or an image. Workout lives at `/`, Diet at `/diet/`; both share one member list and one install.
 
 ## Folder
 
 ```
 public/
-├── index.html            the app (HTML, CSS, JS in one file)
+├── index.html            Workout tool
+├── diet/index.html       Diet chart tool
+├── favicon.svg           browser tab icon
 ├── manifest.webmanifest  PWA install settings
 ├── sw.js                 service worker (offline + install)
 ├── _headers              cache and content-type headers
